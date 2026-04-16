@@ -1,0 +1,14 @@
+# Ignore application properties 
+src/main/resources/application.properties
+
+# Java build files
+target/
+*.class
+*.jar
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
