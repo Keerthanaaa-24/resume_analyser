@@ -27,7 +27,7 @@ public class ResumeController {
             if (text == null || text.isEmpty()) {
                 return new ResumeResult(
                         0,
-                        "❌ Could not read resume file",
+                        "❌ Could not read resume",
                         Map.of(),
                         Map.of("matched", List.of(), "missing", List.of())
                 );
@@ -51,7 +51,7 @@ public class ResumeController {
 
             return new ResumeResult(
                     0,
-                    "❌ Server error while analyzing resume",
+                    "❌ Server error",
                     Map.of(),
                     Map.of("matched", List.of(), "missing", List.of())
             );

@@ -14,20 +14,20 @@ import java.util.*;
 @Service
 public class ResumeService {
 
-    // 🔹 Extract text (PDF + DOCX FIXED)
+    // 🔹 Extract text (PDF + DOCX SAFE)
     public String extractText(MultipartFile file) {
 
         try {
             String name = file.getOriginalFilename();
 
-            // PDF
-            if (name != null && name.endsWith(".pdf")) {
+            if (name == null) return "";
+
+            if (name.endsWith(".pdf")) {
                 PDDocument doc = PDDocument.load(file.getInputStream());
                 return new PDFTextStripper().getText(doc);
             }
 
-            // DOCX (SAFE — no extractor)
-            else if (name != null && name.endsWith(".docx")) {
+            else if (name.endsWith(".docx")) {
 
                 XWPFDocument doc = new XWPFDocument(file.getInputStream());
                 StringBuilder text = new StringBuilder();
@@ -46,62 +46,22 @@ public class ResumeService {
         return "";
     }
 
-    // 🔹 Role Requirements (EXTENDED 🔥)
+    // 🔹 Role Skills
     public List<String> getRoleSkills(String role) {
 
         Map<String, List<String>> roles = new HashMap<>();
 
         roles.put("genai", Arrays.asList(
                 "python","machine learning","deep learning",
-                "nlp","transformers","openai","langchain",
-                "docker","aws","cloud","git","llm","rag"
-        ));
-
-        roles.put("datascience", Arrays.asList(
-                "python","pandas","numpy","statistics",
-                "machine learning","sql","data visualization"
-        ));
-
-        roles.put("ml", Arrays.asList(
-                "python","tensorflow","pytorch",
-                "deep learning","model deployment"
+                "nlp","transformers","docker","aws","git"
         ));
 
         roles.put("backend", Arrays.asList(
-                "java","spring","spring boot","api",
-                "mysql","mongodb","docker","aws","git"
+                "java","spring","api","mysql","docker"
         ));
 
         roles.put("frontend", Arrays.asList(
-                "html","css","javascript","react","angular","ui","ux"
-        ));
-
-        roles.put("fullstack", Arrays.asList(
-                "java","spring","react","html","css","api","mysql"
-        ));
-
-        roles.put("devops", Arrays.asList(
-                "docker","kubernetes","ci/cd","jenkins","linux","aws"
-        ));
-
-        roles.put("cloud", Arrays.asList(
-                "aws","azure","gcp","cloud architecture","docker"
-        ));
-
-        roles.put("mobile", Arrays.asList(
-                "android","kotlin","flutter","react native"
-        ));
-
-        roles.put("cyber", Arrays.asList(
-                "security","ethical hacking","penetration testing","encryption"
-        ));
-
-        roles.put("qa", Arrays.asList(
-                "testing","selenium","automation testing","jira"
-        ));
-
-        roles.put("uiux", Arrays.asList(
-                "figma","ui design","ux design","wireframing","prototyping"
+                "html","css","javascript","react"
         ));
 
         return roles.getOrDefault(role, new ArrayList<>());
@@ -127,7 +87,7 @@ public class ResumeService {
         return result;
     }
 
-    // 🔹 Score Calculation
+    // 🔹 Score
     public int calculateRoleScore(List<String> matched, List<String> total) {
 
         if (total.isEmpty()) return 0;
@@ -139,10 +99,9 @@ public class ResumeService {
     public String generateRoleFeedback(String role, List<String> missing) {
 
         if (missing.isEmpty()) {
-            return "🔥 Perfect match for " + role + " role!";
+            return "🔥 Perfect match for " + role;
         }
 
-        return "⚠️ Improve for " + role + " role by learning: "
-                + String.join(", ", missing);
+        return "⚠️ Improve by adding: " + String.join(", ", missing);
     }
 }
