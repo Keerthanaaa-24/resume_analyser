@@ -5,17 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Resume Analyzer</title>
 
-<!-- Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body {
-    margin: 0;
     font-family: 'Segoe UI';
-    background: #f5f7fa;
+    background: #f4f6fb;
+    margin: 0;
     text-align: center;
 }
 
@@ -27,57 +23,37 @@ h1 {
     color: #2a5298;
 }
 
-/* Card */
 .card {
     background: white;
-    padding: 20px;
     margin: 20px auto;
+    padding: 20px;
     width: 90%;
-    max-width: 500px;
+    max-width: 650px;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
-
-/* Button */
 button {
-    padding: 12px 20px;
+    padding: 12px 18px;
+    border: none;
     background: #2a5298;
     color: white;
-    border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-button:hover {
-    transform: scale(1.05);
-}
-
-/* Progress bar */
 .progress {
     height: 10px;
     background: #ddd;
     border-radius: 10px;
-    margin-top: 10px;
 }
 
 #progressBar {
     height: 100%;
     width: 0%;
-    background: green;
     border-radius: 10px;
 }
 
-/* Select */
-select {
-    padding: 8px;
-    margin-bottom: 10px;
-}
 </style>
 </head>
 
@@ -85,14 +61,12 @@ select {
 
 <div class="container">
 
-    <h1>🚀 AI Resume Analyzer</h1>
+<h1>🚀 AI Resume Analyzer</h1>
 
-    <!-- Upload -->
-    <div class="card">
+<div class="card">
+    <h3>Select Role</h3>
 
-        <h3>Select Role</h3>
-
-        <select id="role">
+    <select id="role">
             <option value="genai">Gen AI Engineer</option>
             <option value="datascience">Data Scientist</option>
             <option value="ml">ML Engineer</option>
@@ -107,47 +81,38 @@ select {
             <option value="uiux">UI/UX Designer</option>
         </select>
 
-        <br>
 
-        <input type="file" id="fileInput">
+    <br><br>
 
-        <br><br>
+    <input type="file" id="fileInput">
 
-        <button onclick="upload()">Analyze Resume</button>
+    <br><br>
 
+    <button onclick="upload()">Analyze Resume</button>
+</div>
+
+<div class="card">
+    <h2 id="scoreText">ATS Score: --</h2>
+    <div class="progress">
+        <div id="progressBar"></div>
     </div>
+</div>
 
-    <!-- Score -->
-    <div class="card">
-        <h2 id="scoreText">ATS Score: --</h2>
+<div class="card">
+    <h3>📊 Skill Analysis</h3>
+    <canvas id="chart"></canvas>
+</div>
 
-        <div class="progress">
-            <div id="progressBar"></div>
-        </div>
-    </div>
+<div class="card">
+    <h3>🧠 Feedback</h3>
+    <p id="feedback"></p>
 
-    <!-- Chart -->
-    <div class="card">
-        <h3>📊 Skill Analysis</h3>
-        <canvas id="chart"></canvas>
-    </div>
+    <h4>✅ Matched Skills</h4>
+    <p id="matched"></p>
 
-    <!-- Feedback -->
-    <div class="card">
-
-        <h3>🧠 Feedback</h3>
-        <p id="feedback"></p>
-
-        <h4>✅ Matched Skills</h4>
-        <p id="matched"></p>
-
-        <h4>❌ Missing Skills</h4>
-        <p id="missing"></p>
-
-    </div>
-
-    <!-- Download -->
-    <button onclick="download()">Download Report</button>
+    <h4>❌ Missing Skills</h4>
+    <p id="missing"></p>
+</div>
 
 </div>
 

@@ -1,5 +1,4 @@
-let resultText = "";
-let pieChart = null;
+let chartInstance = null;
 
 function upload() {
 
@@ -7,11 +6,9 @@ function upload() {
     let role = document.getElementById("role").value;
 
     if (!file) {
-        alert("Upload resume!");
+        alert("Upload resume first!");
         return;
     }
-
-    document.getElementById("scoreText").innerText = "Analyzing...";
 
     let formData = new FormData();
     formData.append("file", file);
@@ -24,53 +21,72 @@ function upload() {
     .then(res => res.json())
     .then(data => {
 
-        let score = data.score ?? 0;
+        console.log("API RESPONSE:", data);
 
-        // 🎨 COLOR LOGIC
+        let score = data.score || 0;
+
+        // 🎨 Color logic
         let color = "red";
         if (score >= 70) color = "green";
         else if (score >= 40) color = "orange";
 
+        // Score display
         let scoreEl = document.getElementById("scoreText");
         scoreEl.innerText = "ATS Score: " + score;
         scoreEl.style.color = color;
 
-        // 📊 Progress bar
+        // Progress bar
         let bar = document.getElementById("progressBar");
         bar.style.width = score + "%";
         bar.style.background = color;
 
-        // Feedback
-        document.getElementById("feedback").innerText = data.feedback;
-
+        // Skills
         let matched = data.skills?.matched || [];
         let missing = data.skills?.missing || [];
 
-        document.getElementById("matched").innerText = matched.join(", ");
-        document.getElementById("missing").innerText = missing.join(", ");
+        document.getElementById("matched").innerText =
+            matched.length ? matched.join(", ") : "None";
 
-        // 📊 CHART
+        document.getElementById("missing").innerText =
+            missing.length ? missing.join(", ") : "None";
+
+        // 🔥 AI FEEDBACK CLEANING
+        let feedbackText = data.feedback;
+
+        try {
+            let parsed = JSON.parse(feedbackText);
+
+            // Try extracting actual text safely
+            feedbackText =
+                parsed.output?.[0]?.content?.[0]?.text ||
+                JSON.stringify(parsed, null, 2);
+
+        } catch (e) {
+            // fallback (already plain text)
+        }
+
+        document.getElementById("feedback").innerText =
+            feedbackText || "No feedback available";
+
+        // Chart
         createChart(matched.length, missing.length);
 
-        // Save
-        resultText =
-            "Role: " + role + "\n\n" +
-            "ATS Score: " + score + "\n\n" +
-            "Feedback:\n" + data.feedback + "\n\n" +
-            "Matched: " + matched.join(", ") + "\n\n" +
-            "Missing: " + missing.join(", ");
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error connecting to backend");
     });
 }
 
 
-// 📊 Chart.js
+// 📊 Chart
 function createChart(matched, missing) {
 
     let ctx = document.getElementById("chart");
 
-    if (pieChart) pieChart.destroy();
+    if (chartInstance) chartInstance.destroy();
 
-    pieChart = new Chart(ctx, {
+    chartInstance = new Chart(ctx, {
         type: "doughnut",
         data: {
             labels: ["Matched", "Missing"],
@@ -80,20 +96,4 @@ function createChart(matched, missing) {
             }]
         }
     });
-}
-
-
-// 📥 Download as PDF
-function download() {
-
-    if (!resultText) {
-        alert("Analyze first!");
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
-
-    doc.text(resultText, 10, 10);
-    doc.save("ATS_Report.pdf");
 }
