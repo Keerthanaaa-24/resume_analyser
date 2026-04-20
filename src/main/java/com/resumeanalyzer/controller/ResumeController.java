@@ -1,5 +1,4 @@
 package com.resumeanalyzer.controller;
-
 import com.resumeanalyzer.model.ResumeResult;
 import com.resumeanalyzer.service.ResumeService;
 import com.resumeanalyzer.service.AIService;
@@ -7,9 +6,7 @@ import com.resumeanalyzer.service.AIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.*;
-
 @RestController
 @CrossOrigin
 public class ResumeController {
