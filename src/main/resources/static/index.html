@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Resume Analyzer</title>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 body {
     font-family: 'Segoe UI';
@@ -14,15 +12,12 @@ body {
     margin: 0;
     text-align: center;
 }
-
 .container {
     padding: 20px;
 }
-
 h1 {
     color: #2a5298;
 }
-
 .card {
     background: white;
     margin: 20px auto;
@@ -32,7 +27,6 @@ h1 {
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
 button {
     padding: 12px 18px;
     border: none;
@@ -41,31 +35,23 @@ button {
     border-radius: 8px;
     cursor: pointer;
 }
-
 .progress {
     height: 10px;
     background: #ddd;
     border-radius: 10px;
 }
-
 #progressBar {
     height: 100%;
     width: 0%;
     border-radius: 10px;
 }
-
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
 <h1>🚀 AI Resume Analyzer</h1>
-
 <div class="card">
     <h3>Select Role</h3>
-
     <select id="role">
             <option value="genai">Gen AI Engineer</option>
             <option value="datascience">Data Scientist</option>
@@ -80,43 +66,30 @@ button {
             <option value="qa">QA Engineer</option>
             <option value="uiux">UI/UX Designer</option>
         </select>
-
-
     <br><br>
-
     <input type="file" id="fileInput">
-
     <br><br>
-
     <button onclick="upload()">Analyze Resume</button>
 </div>
-
 <div class="card">
     <h2 id="scoreText">ATS Score: --</h2>
     <div class="progress">
         <div id="progressBar"></div>
     </div>
 </div>
-
 <div class="card">
     <h3>📊 Skill Analysis</h3>
     <canvas id="chart"></canvas>
 </div>
-
 <div class="card">
     <h3>🧠 Feedback</h3>
     <p id="feedback"></p>
-
     <h4>✅ Matched Skills</h4>
     <p id="matched"></p>
-
     <h4>❌ Missing Skills</h4>
     <p id="missing"></p>
 </div>
-
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
